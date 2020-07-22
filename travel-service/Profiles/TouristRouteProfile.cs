@@ -17,6 +17,14 @@ namespace travel_service.Profiles
                 .ForMember(dest => dest.TripType, opt => opt.MapFrom(src => src.TripType.ToString()))
                 .ForMember(dest => dest.DepartureCity, opt => opt.MapFrom(src => src.DepartureCity.ToString()));
 
+            CreateMap<TouristRouteForCreationDto, TouristRoute>()
+                .ForMember(
+                dest => dest.Id,
+                opt => opt.MapFrom(src => Guid.NewGuid()
+                    )
+                );
+            CreateMap<TouristRouteForUpdateDto, TouristRoute>();
+            CreateMap<TouristRoute, TouristRouteForUpdateDto>();
         }
     }
 }

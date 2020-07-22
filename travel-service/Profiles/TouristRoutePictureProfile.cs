@@ -10,6 +10,8 @@ namespace travel_service.Profiles
         public TouristRoutePictureProfile()
         {
             CreateMap<TouristRoutePicture, TouristRoutePicturesDto>();
+            CreateMap<TouristRoutePictureForCreationDto, TouristRoutePicture>();
+            CreateMap<TouristRoutePicture, TouristRoutePictureForCreationDto>();
         }
     }
 }

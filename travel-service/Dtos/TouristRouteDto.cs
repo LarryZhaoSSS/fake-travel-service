@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace travel_service.Dtos
 {
     public class TouristRouteDto
@@ -20,5 +22,6 @@ namespace travel_service.Dtos
         public string TravelDays { get; set; }
         public string TripType { get; set; }
         public string DepartureCity { get; set; }
+        public ICollection<TouristRoutePicturesDto> TouristPictures { get; set; }
     }
 }

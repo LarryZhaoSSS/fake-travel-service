@@ -11,6 +11,7 @@ using travel_service.ResourceParameters;
 using travel_service.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using FakeXiecheng.API.Helper;
+using Microsoft.AspNetCore.Authorization;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace travel_service.Controllers
@@ -52,6 +53,8 @@ namespace travel_service.Controllers
             return Ok(touristRouteDto);
         }
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateTouristRoute([FromBody] TouristRouteForCreationDto touristRouteForCreation)
         {
             var touristRouteModel = _mapper.Map<TouristRoute>(touristRouteForCreation);
@@ -61,7 +64,9 @@ namespace travel_service.Controllers
             var touristRouteToReturn = _mapper.Map<TouristRouteDto>(touristRouteModel);
             return CreatedAtRoute("GetTouristRouteById", new { touristRouteId = touristRouteModel.Id }, touristRouteToReturn);
         }
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("{touristRouteId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateTouristRoute([FromRoute] Guid touristRouteId,
             [FromBody] TouristRouteForUpdateDto touristRouteForUpdateDto)
         {

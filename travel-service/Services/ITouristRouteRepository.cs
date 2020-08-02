@@ -17,6 +17,13 @@ namespace travel_service.Services
         void DeleteTouristRoutePicture(TouristRoutePicture picture);
         Task<IEnumerable<TouristRoute>> GetTouristRoutesByIdListAsync(IEnumerable<Guid> ids);
         void DeleteTouristRoutes(IEnumerable<TouristRoute> touristRoutes);
+        Task<ShoppingCart> GetShoppingCartByUserId(string userId);
+        Task CreateShoppingCart(ShoppingCart shoppingCart);
+        Task AddShoppingCartItem(LineItem lineItem);
+        Task<LineItem> GetShoppingCartItemByItemId(int lineItemId);
+        void DeleteShoppingCartItem(LineItem lineItem);
+        Task<IEnumerable<LineItem>> GetShoppingCartItemsByIdListAsync(IEnumerable<int> ids);
+        void DeleteShoppingCartItems(IEnumerable<LineItem> lineItems);
         Task<bool> SaveAsync();
     }
 }

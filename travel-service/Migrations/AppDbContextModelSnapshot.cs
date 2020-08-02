@@ -49,7 +49,7 @@ namespace travel_service.Migrations
                         new
                         {
                             Id = "308660dc-ae51-480f-824d-7dca6714c3e2",
-                            ConcurrencyStamp = "7dc29669-de62-4511-8245-b76fddad5c82",
+                            ConcurrencyStamp = "7bc579a3-b3c1-4501-a4c4-3567e394ee21",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -258,19 +258,65 @@ namespace travel_service.Migrations
                         {
                             Id = "90184155-dee0-40c9-bb1e-b5ed07afc04e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c98afbde-4e90-4dbe-af3f-d6050fa63254",
+                            ConcurrencyStamp = "1fcdc6a2-b562-4628-87c3-9c8302510ac2",
                             Email = "admin@fakexiecheng.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FAKEXIECHENG.COM",
                             NormalizedUserName = "ADMIN@FAKEXIECHENG.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAED4ZeiEGOvP3hKBjxrm1NE/xKIM+I4MUGpuquy5+hw13nYcdKleHD6mT46eZTUinkA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFp2FdJWJ63kLMWwQ9Pm+t+L4wDWNojbF5c2Twl1iorpPIfzDzja4gfQCnGtPQ5o1w==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "50a92554-3cab-4cdd-87aa-0015cb491205",
+                            SecurityStamp = "7b87149c-7631-471b-961f-93d0a7c0ece5",
                             TwoFactorEnabled = false,
                             UserName = "admin@fakexiecheng.com"
                         });
+                });
+
+            modelBuilder.Entity("travel_service.Models.LineItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double?>("DiscountPresent")
+                        .HasColumnType("float");
+
+                    b.Property<decimal>("OriginalPrice")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<Guid?>("ShoppingCartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TouristRouteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShoppingCartId");
+
+                    b.HasIndex("TouristRouteId");
+
+                    b.ToTable("LineItems");
+                });
+
+            modelBuilder.Entity("travel_service.Models.ShoppingCart", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("travel_service.Models.TouristRoute", b =>
@@ -1069,6 +1115,26 @@ namespace travel_service.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("travel_service.Models.LineItem", b =>
+                {
+                    b.HasOne("travel_service.Models.ShoppingCart", null)
+                        .WithMany("ShoppingCartItems")
+                        .HasForeignKey("ShoppingCartId");
+
+                    b.HasOne("travel_service.Models.TouristRoute", "TouristRoute")
+                        .WithMany()
+                        .HasForeignKey("TouristRouteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("travel_service.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("travel_service.Models.ApplicationUser", "User")
+                        .WithOne("ShoppingCart")
+                        .HasForeignKey("travel_service.Models.ShoppingCart", "UserId");
                 });
 
             modelBuilder.Entity("travel_service.Models.TouristRoutePicture", b =>
